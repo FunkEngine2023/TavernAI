@@ -1,4 +1,4 @@
-### TavernAI is a adventure atmospheric chat (KoboldAI, NovelAI, Pygmalion, OpenAI)
+### TavernAI is a adventure atmospheric chat (KoboldAI, NovelAI, Pygmalion, OpenAI,  Text-gen webUI)
 Examples of interface and output:
 <br><img src="readme/1.png" height="200" /><img src="readme/4.png" height="200" /><img src="readme/5.png" height="200" />
 
@@ -13,14 +13,19 @@ Examples of interface and output:
 ## Features
 * Creating characters with personality setup
 * Online character library
-* Choosing name and avatar for your character
-* Deleting and regenerating messages
-* Editing any messages
-* Works with various AI models
-* Importing chats from CAI
-* More longer messages from characters
+* Supporting chat with multiple characters simultaneously
+* Flexible settings for AI models
+* Story mode
+* World Info
+* Swipes
 * Choosing atmospheric backgrounds
-* Creating and easy choosing preset settings
+* Editing/Deleting/Moving any messages
+* KoboldAI Support
+* Horde Support
+* NovelAI support
+* OpenAI Support
+* Reverse Proxy support
+
 
 ## How to install
 ### In Detail:
@@ -30,12 +35,13 @@ Examples of interface and output:
 1. Download [TavernAI](https://github.com/TavernAI/TavernAI/archive/refs/heads/main.zip)
 2. Install [Node.js v19.1.0](https://nodejs.org/download/release/v19.1.0/)
 3. Run Start.bat (or use command: *npm install*, *node server.js*)
-## AI Models
+## AI Models and AI Engines
 * [KoboldAI](https://github.com/KoboldAI/KoboldAI-Client)
 * [NovelAI](https://novelai.net/)
 * [Pygmalion](https://rentry.org/pygmalion-ai)
 * [chatGPT](https://chat.openai.com/)
 * [GPT-4](https://openai.com/research/gpt-4)
+* [Text-gen webUI](https://github.com/oobabooga/text-generation-webui)
 
 ## Tips
 Use this button to edit the message<br><br>
@@ -43,7 +49,8 @@ Use this button to edit the message<br><br>
 If the message is not finished, you can simply send the request again, TavernAI will understand that this is a continuation. <br>(Works with KoboldAI and NovelAI models, not with Pygmalion)<br>
 <br><img src="readme/2.png" width="600" />
 ## Additional materials
-https://www.reddit.com/user/Crataco/comments/zuowi9/opensource_chatbot_companions/
+* [FAQ](https://github.com/TavernAI/TavernAI/blob/main/faq.md)
+* [https://www.reddit.com/user/Crataco/comments/zuowi9/opensource_chatbot_companions/](https://github.com/TavernAI/TavernAI/blob/main/faq.md)
 ## For contacts
 * Discord: Humi#5044
 <br><br><br>
