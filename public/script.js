@@ -39,7 +39,7 @@ export const gap_holder = 120;
 export var online_status = 'no_connection';
 var chat_name;
 const VERSION = '1.5.1';
-/*
+
 var chloeMes = {
         name: 'Chloe',
         is_user: false,
@@ -47,10 +47,10 @@ var chloeMes = {
         create_date: 0,
         mes: '*You went inside. The air smelled of fried meat, tobacco and a hint of wine. A dim light was cast by candles, and a fire crackled in the fireplace. It seems to be a very pleasant place. Behind the wooden bar is an elf waitress, she is smiling. Her ears are very pointy, and there is a twinkle in her eye. She wears glasses and a white apron. As soon as she noticed you, she immediately came right up close to you.*\n\n' +
             ' Hello there! How is your evening going?' +
-            '<div id="characloud_img"><img src="img/tavern.png" id="chloe_star_dust_city"></div>\n<a id="verson" href="https://github.com/TavernAI/TavernAI" target="_blank">@@@TavernAI v'+VERSION+'@@@</a><a href="https://boosty.to/tavernai" target="_blank"><div id="characloud_url"><img src="img/cloud_logo.png"><div id="characloud_title">Support</div></div></a><br><br><br><br>',
+            '<div id="characloud_img"><img src="img/tavern.png" id="chloe_star_dust_city"></div>\n<a id="verson" href="https://github.com/TavernAI/TavernAI" target="_blank">@@@TavernAI v'+VERSION+'@@@</a><a href="https://boosty.to/tavernai" target="_blank"><div id="characloud_url"><img src="img/heart.png" style="width:18px; heigth:18px; margin-right:2px;"><div id="characloud_title">Support</div></div></a><br><br><br><br>',
         chid: -2
     };
-*/
+/*
 var chloeMes = {
         name: 'Chloe',
         is_user: false,
@@ -61,6 +61,7 @@ var chloeMes = {
             '<div id="characloud_img"><img src="img/tavern_summer.png" id="chloe_star_dust_city"></div>\n<a id="verson" href="https://github.com/TavernAI/TavernAI" target="_blank">@@@TavernAI v'+VERSION+'@@@</a><a href="https://boosty.to/tavernai" target="_blank"><div id="characloud_url"><img src="img/heart.png" style="width:18px; heigth:18px; margin-right:2px;"><div id="characloud_title">Support</div></div></a><br><br><br><br>',
         chid: -2
     };
+*/
 export var chat = [chloeMes];
 
 
@@ -1345,7 +1346,7 @@ $(document).ready(function(){
         var avatarImg = "User Avatars/"+user_avatar;
         if(!mes.is_user){
             if(Characters.selectedID === undefined) {
-                avatarImg = "img/chloe_summer.png";
+                avatarImg = "img/chloe.png";
             } else {
                 //mes.chid = mes.chid || parseInt(Characters.selectedID);
                 if(!is_room)
@@ -2030,7 +2031,7 @@ $(document).ready(function(){
                         if (SystemPrompt.system_prompt.length > 0 && this_system_depth === i  && SystemPrompt.system_depth <= SystemPrompt.system_depth_max) {
                             finalPromt[i + 1] = {"role": "system", "content": item};
                         } else {
-                            if (SystemPrompt.jailbreak_prompt.length > 0 && this_jailbreak_depth === i) {
+                            if (SystemPrompt.jailbreak_prompt.length > 0 && this_jailbreak_depth+1 === i) {
                                 finalPromt[i + 1] = {"role": "system", "content": item};
                             } else {
                                 if (item.indexOf(name1 + ':') === 0) {
@@ -6291,6 +6292,7 @@ $(document).ready(function(){
                                 text: 'gpt-3.5-turbo'
                             }));
                             let is_mode_exist = false;
+                            
                             data.data.forEach(function(item, i){
                                 if(model_proxy === item.id) is_mode_exist = true;
                                 $('#model_openai_select').append($('<option>', {
