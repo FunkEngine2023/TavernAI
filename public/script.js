@@ -193,7 +193,7 @@ export function isChatModel() { // Checking is it chat model (for OpenAI and pro
     }else if(main_api === 'proxy'){
         checked_model = model_proxy;
     }
-    if (checked_model === 'text-davinci-003' || checked_model === 'text-davinci-002' || checked_model === 'text-curie-001' || checked_model === 'text-babbage-001' || checked_model === 'text-ada-001' || checked_model === 'code-davinci-002') {
+    if (checked_model === 'text-davinci-003' || checked_model === 'text-davinci-002' || checked_model === 'text-curie-001' || checked_model === 'text-babbage-001' || checked_model === 'text-ada-001' || checked_model === 'code-davinci-002'|| checked_model === 'gpt-3.5-turbo-instruct') {
         return false;
     } else {
         return true;
@@ -1909,6 +1909,7 @@ $(document).ready(function(){
                                 item = item.replace(name1+':', 'You:');
                             }
                         }
+
                         mesSend[mesSend.length] = item;
                         //chatString = chatString+item;
                     });
@@ -2040,6 +2041,7 @@ $(document).ready(function(){
                                     finalPromt[i + 1] = {"role": "assistant", "content": item};
                                 }
                             }
+
                         }
 
                     });
@@ -2676,7 +2678,7 @@ $(document).ready(function(){
                 }
             }
         });
-        var save_chat = [{user_name:default_user_name, character_name:name2,create_date: chat_create_date, notes: winNotes.text, notes_type: winNotes.strategy, mode: Tavern.mode}, ...chat];
+        var save_chat = [{user_name:name1, character_name:name2,create_date: chat_create_date, notes: winNotes.text, notes_type: winNotes.strategy, mode: Tavern.mode}, ...chat];
         if(chat_name !== undefined){
             save_chat[0].chat_name = chat_name;
         }
@@ -2734,6 +2736,7 @@ $(document).ready(function(){
                     chat_name = chat[0]['chat_name'];
                     winNotes.text = chat[0].notes || "";
                     winNotes.strategy = chat[0].notes_type || "discr";
+                    name1 = chat[0].user_name;
                     if(!winNotes.text || !winNotes.text.length) {
                         let defaultWpp = '[Character("'+Characters.id[Characters.selectedID].name+'"){}]';
                         try {
@@ -6290,6 +6293,14 @@ $(document).ready(function(){
                             $('#model_openai_select').append($('<option>', {
                                 value: 'gpt-3.5-turbo',
                                 text: 'gpt-3.5-turbo'
+                            }));
+                            $('#model_openai_select').append($('<option>', {
+                                value: 'claude-v1.3',
+                                text: 'claude-v1.3'
+                            }));
+                            $('#model_openai_select').append($('<option>', {
+                                value: 'claude-v1.2',
+                                text: 'claude-v1.2'
                             }));
                             let is_mode_exist = false;
                             
