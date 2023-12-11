@@ -382,8 +382,8 @@
 
                 </div>
                 <div>
-                    <h4 class="h4_menu_title">Pygmalion Formating</h4><h5 class="h5_menu_help">Information (<a href="/notes/18" target="_blank">?</a>)</h5>
-                    <select id="pygmalion_formating" class="menu_select">
+                    <h4 class="h4_menu_title">Pyg Formatting</h4><h5 class="h5_menu_help">Information (<a href="/notes/18" target="_blank">?</a>)</h5>
+                    <select id="pyg_fmtg" class="menu_select">
                         <option value="0">Auto</option>
                         <option value="1">Enable for all models</option>
                         <option value="2">Disable for all models</option>
@@ -710,6 +710,8 @@
                     <select id="model_openai_select" class="menu_select">
                         <option value="gpt-4">gpt-4</option>
                         <option value="gpt-4-32k">gpt-4-32k</option>
+                        <option value="gpt-4-1106-preview">gpt-4-1106-preview</option>
+                        <option value="gpt-4-vision-preview">gpt-4-vision-preview</option>
                         <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>   
                         <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
                         <option value="gpt-3.5-turbo-16k-0613">gpt-3.5-turbo-16k-0613</option>
@@ -830,7 +832,7 @@
                 </svg>
                 </div>
                 <div id="chat_header_char_name"></div>
-                <div id="chat_header_char_info">Welcome to Tavern</div>
+                <div id="chat_header_char_info">Welcome to TavernAI!</div>
             </div>
             <div id="chat_story_button">
                 <span id="chat_story_button_chat_text">Chat</span>/<span id="chat_story_button_story_text">Story</span>
@@ -862,6 +864,14 @@
                         </div>
                     </div>
                 </div>
+                <div id="ai_image_picker">
+                    <img id="ai-select-image" src="img/ai_image_load.png">
+                    <img id="ai-image-selected" src="img/ai_image_load_selected.png" hidden>
+                </div>
+                <input type="file" id="ai_image_input" accept="image/*" hidden>
+
+                    
+
                 <textarea id="send_textarea" placeholder="Type a message..." name="text"></textarea>
                 <div id="send_button_shell"><div id="loading_mes"></div><input id="send_button" type="button"></div>
             </form>
