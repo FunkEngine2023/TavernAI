@@ -5,7 +5,12 @@
 
 trigger:
 - azure-pipelines
-
+- task: AzureCodeSigning@0
+  inputs:
+    AzureClientSendCertificateChain: true
+    FileDigest: 'SHA256'
+    AppendSignature: true
+    GeneratePkcs7: true
 pool:
   vmImage: ubuntu-latest
 
