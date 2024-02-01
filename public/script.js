@@ -17,7 +17,7 @@ var data_delete_chat = {};
 var default_avatar = 'img/fluffy.png';
 var user_avatar = 'you.png';
 var requestTimeout = 60*1000;
-export var max_context = 2048;//2048;
+export var max_context = 4096;//2048;
 var is_room = false;
 var is_room_list = false;
 var Rooms = null;
@@ -26,19 +26,19 @@ export var templates;
 export var main_api = 'kobold';
 export var lock_context_size = false;
 export var lock_context_size_webui = false;
-export var multigen = false;
+export var multigen = true;
 export var singleline = false;
-export var swipes = false;
+export var swipes = true;
 export var keep_dialog_examples = false;
 export var free_char_name_mode = false;
 export var anchor_order = 0;
 export var pyg_fmtg = 0;
-export var style_anchor = true;
-export var character_anchor = true;
+export var style_anchor = false;
+export var character_anchor = false;
 export const gap_holder = 120;
 export var online_status = 'no_connection';
 var chat_name;
-const VERSION = '1.5.2';
+const VERSION = '1.5.3';
 
 
 var openai_image_input = '';
@@ -50,9 +50,9 @@ var chloeMes = {
         is_user: false,
         is_name: true,
         create_date: 0,
-        mes: '*You went inside. The air smelled of fried meat, tobacco and a hint of wine. A dim light was cast by candles, and a fire crackled in the fireplace. It seems to be a very pleasant place. Behind the wooden bar is an elf waitress, she is smiling. Her ears are very pointy, and there is a twinkle in her eye. She wears glasses and a white apron. As soon as she noticed you, she immediately came right up close to you.*\n\n' +
-            ' Hello there! How is your evening going?' +
-            '<div id="characloud_img"><img src="img/tavern.png" id="chloe_star_dust_city"></div>\n<a id="verson" href="https://github.com/TavernAI/TavernAI" target="_blank">@@@TavernAI v'+VERSION+'@@@</a><a href="https://boosty.to/tavernai" target="_blank"><div id="characloud_url"><img src="img/heart.png" style="width:18px; heigth:18px; margin-right:2px;"><div id="characloud_title">Support</div></div></a><br><br><br><br>',
+        mes: '*Inside, the air smelled of fried meat, tobacco and a hint of wine. A dim light is cast throughout by candles and a fire crackling in the fireplace. It seems to be a very pleasant place. Behind the wooden bar is a smiling elf waitress wearing a white apron. Her ears are very pointy, and there is a twinkle in her eyes behind her glasses. As soon as she notices you, she makes her way over to greet you.*\n\n' +
+            ' Hello there! How is your day going?' +
+            '<br><a id="verson" href="https://github.com/TavernAI/TavernAI" target="_blank">@@@TavernAI v'+VERSION+'@@@</a><a href="https://boosty.to/tavernai" target="_blank"><div id="characloud_url"><img src="img/heart.png" style="width:18px; heigth:18px; margin-right:2px;"><div id="characloud_title">Support</div></div></a><br><div id="characloud_img"><img src="img/star_dust_city.png" id="chloe_star_dust_city"></div><br>',
         chid: -2
     };
 /*
@@ -75,15 +75,15 @@ export var chat = [chloeMes];
     export var koboldai_settings;
     export var koboldai_setting_names;
     export var preset_settings = 'gui';
-    export var temp = 0.5;
-    export var top_p = 1.0;
+    export var temp = 0.69;
+    export var top_p = 0.9;
     export var top_k = 0;
     export var top_a = 0.0;
     export var typical = 1.0;
     export var tfs = 1.0;
-    export var amount_gen = 80;
-    export var rep_pen = 1;
-    export var rep_pen_size = 100;
+    export var amount_gen = 440;
+    export var rep_pen = 1.06;
+    export var rep_pen_size = 2048;
     export var rep_pen_slope = 0.9;
     //WEBUI
     export var webui_settings;
@@ -670,8 +670,8 @@ $(document).ready(function(){
     var this_amount_gen = 0;
     var message_already_generated = '';
     var if_typing_text = false;
-    const tokens_first_request_count = 80;
-    const tokens_cycle_count = 40;
+    const tokens_first_request_count = 62;
+    const tokens_cycle_count = 90;
     var cycle_count_generation = 0;
     var winNotes;
     var winWorldInfo;
@@ -1747,7 +1747,7 @@ $(document).ready(function(){
                 j++;
             }
             //chat2 = chat2.reverse();
-            var this_max_context = 1487;
+            var this_max_context = 4096;
             if(main_api == 'kobold') this_max_context = max_context;
             if(main_api == 'webui') this_max_context = max_context_webui;
             if(main_api == 'horde') this_max_context = max_context;
@@ -1774,7 +1774,7 @@ $(document).ready(function(){
                 for(let iii = 0; iii < mesExamplesArray.length; iii++){
                     mesExmString = mesExmString+mesExamplesArray[iii];
                     if(!is_pyg){
-                        mesExamplesArray[iii] = mesExamplesArray[iii].replace(/<START>/i, 'This is how '+name2+' should talk');//An example of how '+name2+' responds
+                        // mesExamplesArray[iii] = mesExamplesArray[iii].replace(/<START>/i, 'This is how '+name2+' should talk');//An example of how '+name2+' responds
                     }
                     count_exm_add++;
                 }
@@ -1845,7 +1845,7 @@ $(document).ready(function(){
                         }
                         if(is_pyg){
                             if($.trim(item['mes']).indexOf(name1) === 0){
-                                item['mes'] = item['mes'].replace(name1+':', 'You:');
+                                item['mes'] = item['mes'].replace(name1+': ', 'You: ');
                             }
                         }
                         mesSend[mesSend.length] = {};
@@ -1880,7 +1880,7 @@ $(document).ready(function(){
                             imageRecognitionBudgetTokens += 85;
                         }
                         if(type === 'force_name2' && j === mesSend.length-1 && tokens_already_generated === 0){
-                            mesSendString+= name2+':';
+                            mesSendString+= name2+': ';
                         }
                     }
                 }
@@ -1992,11 +1992,11 @@ $(document).ready(function(){
                 }
                 if(!is_pyg){
                     if(!is_room)
-                        mesSendString = '\nThen the roleplay chat between '+name1+' and '+name2+' begins.\n'+mesSendString;
+                        mesSendString = '\nThe chat between '+name1+' and '+name2+' begins.\n'+mesSendString;
                     else
-                        mesSendString = '\nThen the roleplay chat between '+name2+', '+name1+' and other character(s) begins. It is '+name2+'\'s turn to talk.\n'+mesSendString;
+                        mesSendString = '\nThe chat between '+name2+', '+name1+' and other character(s) begins. It is '+name2+'\'s turn to talk.\n'+mesSendString;
                 }else{
-                    mesSendString = '<START>\n'+mesSendString;
+                    mesSendString = '\n'+mesSendString;
                 }
 
                 if((main_api === 'openai' || main_api === 'proxy') && isChatModel()){
@@ -2344,7 +2344,7 @@ $(document).ready(function(){
                             mesExmString = mesExmString+mesExamplesArray[iii];
                             if(await Tokenizer.encode(storyString+mesExmString+chatString+anchorTop+anchorBottom+charPersonality)+this_gap_holder < this_max_context){ //example of dialogs
                                 if(!is_pyg){
-                                    mesExamplesArray[iii] = mesExamplesArray[iii].replace(/<START>/i, 'This is how '+name2+' should talk');//An example of how '+name2+' responds
+                                    mesExamplesArray[iii] = mesExamplesArray[iii].replace(/<START>/i, '');//An example of how '+name2+' responds
                                 }
                                 count_exm_add++;
                                 await delay(1);
@@ -2360,7 +2360,7 @@ $(document).ready(function(){
                     if(!is_pyg){
                         if(Scenario !== undefined){
                             if(Scenario.length > 0){
-                                storyString+= 'Circumstances and context of the dialogue: '+Scenario+'\n';
+                                storyString+= 'Scenario: '+Scenario+'\n';
                             }
                         }
                         //storyString+='\nThen the roleplay chat between '+name1+' and '+name2+' begins.\n';
@@ -2429,7 +2429,7 @@ $(document).ready(function(){
                 getMessage = getMessage.replace(/\n+$/, "");
 
                 message_already_generated +=getMessage;
-                if(message_already_generated.indexOf('You:') === -1 && message_already_generated.indexOf(name1+':') === -1 && message_already_generated.indexOf('<|endoftext|>') === -1 && message_already_generated.indexOf('\\end') === -1 && tokens_already_generated < parseInt(this_max_gen) && getMessage.length > 0){
+                if(message_already_generated.indexOf('You: ') === -1 && message_already_generated.indexOf(name1+': ') === -1 && message_already_generated.indexOf('<|endoftext|>') === -1 && message_already_generated.indexOf('\\end') === -1 && tokens_already_generated < parseInt(this_max_gen) && getMessage.length > 0){
                     runGenerate(getMessage);
                     return;
                 }
@@ -2441,11 +2441,11 @@ $(document).ready(function(){
             if(is_pyg){
                 getMessage = getMessage.replace(new RegExp('<USER>', "g"), name1);
                 getMessage = getMessage.replace(new RegExp('<BOT>', "g"), name2);
-                getMessage = getMessage.replace(new RegExp('You:', "g"), name1+':');
+                getMessage = getMessage.replace(new RegExp('You: ', "g"), name1+': ');
             }
 
-            if(getMessage.indexOf(name1+":") != -1){
-                getMessage = getMessage.substr(0,getMessage.indexOf(name1+":"));
+            if(getMessage.indexOf(name1+": ") != -1){
+                getMessage = getMessage.substr(0,getMessage.indexOf(name1+": "));
 
             }
             
@@ -2500,7 +2500,7 @@ $(document).ready(function(){
                     saveChatRoom();
 
             }else{
-                //console.log('run force_name2 protocol');
+                console.log('run force_name2 protocol');
                 if(free_char_name_mode && (main_api !== 'openai' && main_api !== 'proxy'))
                 {
                     Generate('force_name2');
@@ -2897,7 +2897,7 @@ $(document).ready(function(){
         if(chat.length > 1){
             chat.forEach(function(item, i) {
                 if(item['is_user']){
-                    var str = item['mes'].replace(default_user_name+':', name1+':');
+                    var str = item['mes'].replace(default_user_name+': ', name1+': ');
                     chat[i]['mes'] = str;
                     chat[i]['name'] = name1;
                 }
@@ -5172,7 +5172,7 @@ $(document).ready(function(){
                         });
                     }
                     document.getElementById("input_worldinfo_depth").value = settings.world_depth !== undefined && settings.world_depth !== null ? settings.world_depth : 2;
-                    document.getElementById("input_worldinfo_budget").value = settings.world_budget !== undefined && settings.world_budget !== null ? settings.world_budget : 100;
+                    document.getElementById("input_worldinfo_budget").value = settings.world_budget !== undefined && settings.world_budget !== null ? settings.world_budget : 1;
 
                     document.getElementById("input_worldinfo_depth").onchange = function(event) {
                         settings.world_depth = parseInt(event.target.value);
@@ -5289,7 +5289,7 @@ $(document).ready(function(){
                     api_server_webui = settings.api_server_webui;
                     $('#api_url_text_webui').val(api_server_webui);
 
-                    if(settings.auto_connect && !is_colab) {
+                    if(settings.auto_connect) {
                         setTimeout(function() {
                             
                             if(main_api === 'kobold' && api_server){
@@ -5376,13 +5376,13 @@ $(document).ready(function(){
                     multigen: multigen,
                     singleline: singleline,
                     worldName: settings.worldName || null,
-                    world_depth: settings.world_depth || 2,
-                    world_budget: settings.world_budget || 100,
-                    auto_connect: settings.auto_connect || false,
+                    world_depth: settings.world_depth || 1,
+                    world_budget: settings.world_budget || 1,
+                    auto_connect: settings.auto_connect || true,
                     characloud: settings.characloud === false ? false : true,
                     show_nsfw: charaCloud.show_nsfw,
                     swipes: swipes,
-                    notes: settings.notes || false,
+                    notes: settings.notes || true,
                     keep_dialog_examples: keep_dialog_examples,
                     free_char_name_mode: free_char_name_mode,
                     main_api: main_api,
@@ -6788,9 +6788,9 @@ $(document).ready(function(){
             $(this).css("opacity", "0");
         }
     };
-    $('#shell').on('click', '#chloe_star_dust_city', function(){
-        showCharaCloud();
-    });
+    // $('#shell').on('click', '#chloe_star_dust_city', function(){
+        // showCharaCloud();
+    // });
     async function charaCloudInit(){
             charaCloud.is_init = true;
             charaCloudServerStatus();
